@@ -1,0 +1,159 @@
+{
+  "component": "Card",
+  "base": "shadcn/ui",
+  "archetype": "Contenedor de superficie que agrupa contenido relacionado. Header opcional (titulo + descripcion + accion), cuerpo libre, footer opcional para acciones secundarias.",
+
+  "properties": {
+    "size": { "type": "size", "values": ["default", "sm"] },
+    "header": { "type": "boolean", "values": [true, false] },
+    "description": { "type": "boolean", "values": [true, false] },
+    "action": { "type": "boolean", "values": [true, false] },
+    "footer": { "type": "boolean", "values": [true, false] }
+  },
+
+  "anatomy": {
+    "root": {
+      "element": "frame",
+      "layout": {
+        "direction": "vertical",
+        "align": "stretch",
+        "width": "fill",
+        "height": "hug",
+        "gap": "spacing/stack-lg",
+        "padding": { "top": "spacing/inset-lg", "right": 0, "bottom": "spacing/inset-lg", "left": 0 },
+        "clipContent": true
+      },
+      "fill": "surface/card",
+      "stroke": { "color": "border/subtle", "width": 1 },
+      "effect": "shadow/sm",
+      "radius": "radius/surface-lg",
+      "notes": "clipContent=true (equivalente a overflow-hidden) para que header/footer hereden el radius en sus esquinas exteriores sin definirlo ellos mismos. effect=shadow/sm convive con stroke=border/subtle (el ring sutil del original + elevacion)."
+    },
+
+    "header": {
+      "element": "frame",
+      "visibleWhen": "header == true",
+      "layout": {
+        "direction": "horizontal",
+        "align": "start",
+        "justify": "space-between",
+        "width": "fill",
+        "height": "hug",
+        "gap": "spacing/inline-md",
+        "padding": { "top": 0, "right": "spacing/inset-lg", "bottom": 0, "left": "spacing/inset-lg" }
+      }
+    },
+
+    "header.titleGroup": {
+      "element": "frame",
+      "layout": {
+        "direction": "vertical",
+        "align": "stretch",
+        "width": "fill",
+        "height": "hug",
+        "gap": "spacing/stack-xs"
+      }
+    },
+
+    "header.title": {
+      "element": "text",
+      "textStyle": "heading/sm",
+      "textColor": "text/default",
+      "content": "Card Title"
+    },
+
+    "header.description": {
+      "element": "text",
+      "visibleWhen": "description == true",
+      "textStyle": "body/default",
+      "textColor": "text/muted",
+      "content": "Card Description"
+    },
+
+    "header.action": {
+      "element": "frame",
+      "visibleWhen": "action == true",
+      "layout": { "align": "start", "width": "hug", "height": "hug" },
+      "notes": "Slot para una instancia provista por el consumidor (Button variant=ghost/outline/link, Badge, etc.). Sin bindings propios."
+    },
+
+    "content": {
+      "element": "frame",
+      "layout": {
+        "direction": "vertical",
+        "align": "stretch",
+        "width": "fill",
+        "height": "hug",
+        "padding": { "top": 0, "right": "spacing/inset-lg", "bottom": 0, "left": "spacing/inset-lg" }
+      }
+    },
+
+    "content.text": {
+      "element": "text",
+      "textStyle": "body/default",
+      "textColor": "text/default",
+      "content": "Card Content"
+    },
+
+    "footer": {
+      "element": "frame",
+      "visibleWhen": "footer == true",
+      "layout": {
+        "direction": "horizontal",
+        "align": "center",
+        "width": "fill",
+        "height": "hug",
+        "gap": "spacing/inline-sm",
+        "padding": { "top": "spacing/inset-lg", "right": "spacing/inset-lg", "bottom": "spacing/inset-lg", "left": "spacing/inset-lg" }
+      },
+      "fill": "surface/muted",
+      "stroke": { "color": "border/default", "width": 1, "side": "top" }
+    },
+
+    "footer.text": {
+      "element": "text",
+      "textStyle": "body/default",
+      "textColor": "text/default",
+      "content": "Card Footer"
+    }
+  },
+
+  "variants": {
+    "size": ["default", "sm"],
+    "overrides": {
+      "sm": {
+        "root.gap": "spacing/stack-md",
+        "root.padding.top": "spacing/inset-md",
+        "root.padding.bottom": "spacing/inset-md",
+        "header.padding.left": "spacing/inset-md",
+        "header.padding.right": "spacing/inset-md",
+        "content.padding.left": "spacing/inset-md",
+        "content.padding.right": "spacing/inset-md",
+        "footer.padding": "spacing/inset-md"
+      }
+    }
+  },
+
+  "composition": {
+    "notes": "Reglas de presencia/oculto entre partes, gatilladas por las propiedades booleanas. Extension a _FORMATO.md para componentes contenedores.",
+    "rules": [
+      "header=false oculta todo el grupo header (titleGroup + action) y su gap/padding en el root.",
+      "description=false oculta header.description; header.titleGroup queda con solo el title.",
+      "action=false oculta header.action; header.titleGroup ocupa el 100% del ancho del header.",
+      "footer=true: root.padding.bottom pasa a 0 (el footer trae su propio padding inferior completo)."
+    ]
+  },
+
+  "states": ["default"],
+
+  "accessibility": [
+    "Contraste AA garantizado por los pares de Maps: surface/card + text/default, surface/muted + text/default, surface/card + text/muted.",
+    "border/subtle en el root es decorativo, no es indicador de foco: Card no es interactivo por si mismo.",
+    "Si se usa como tarjeta clickeable, los estados hover/focus se definen aparte (fuera del alcance de esta spec base).",
+    "Texto minimo 12px: heading/sm y body/default ya cumplen."
+  ],
+
+  "missing_tokens": [],
+
+  "notes": "Traduccion del Card oficial (variable --card-spacing, spec actual post-changelog 'Spacing Variable'). size=default usa --card-spacing=16 (inset-lg/stack-lg); size=sm usa --card-spacing=12 (inset-md/stack-md), igual que el original. root.radius=radius/surface-lg (12) coincide EXACTO con rounded-xl del original (ya no es aproximacion, a diferencia del primer borrador que usaba radius/surface=8). root.effect=shadow/sm es un estilo de efecto (no variable de Maps), referenciado igual que un textStyle; campo 'effect' es una extension a _FORMATO.md con el mismo patron. header.title usa heading/sm como aproximacion a 'leading-none font-semibold' (CLAUDE.md no define pesos/tamanos de heading/*; alternativa label/default si se ve sobredimensionado en Figma). header.action gap (spacing/inline-md) y footer gap (spacing/inline-sm) son defaults propuestos: shadcn no los define explicitamente (CSS grid sin gap declarado). El patron 'Card con imagen' (imagen antes del header, esquinas superiores heredando radius) se deja fuera de esta spec, igual que button.json dejo hover/focus/disabled documentados para expansion futura."
+}

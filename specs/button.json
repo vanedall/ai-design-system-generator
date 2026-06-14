@@ -1,0 +1,68 @@
+{
+  "component": "Button",
+  "base": "shadcn/ui",
+  "archetype": "Control interactivo primario: dispara una acción. Texto label, opcionalmente con icono. Altura fija por tamaño, ancho que abraza el contenido.",
+
+  "properties": {
+    "variant": { "type": "variant", "values": ["default", "destructive", "outline", "secondary", "ghost", "link"] },
+    "size": { "type": "size", "values": ["sm", "default", "lg"] }
+  },
+
+  "anatomy": {
+    "root": {
+      "element": "frame",
+      "layout": {
+        "direction": "horizontal",
+        "align": "center",
+        "justify": "center",
+        "gap": "spacing/inline-sm",
+        "width": "hug",
+        "height": "fixed-by-size"
+      },
+      "radius": "radius/control",
+      "notes": "Altura ligada a control-height segun size. Solo padding horizontal (el alto fijo centra el contenido). Sin padding vertical."
+    },
+    "label": {
+      "element": "text",
+      "textStyle": "label/default",
+      "content": "Button"
+    }
+  },
+
+  "sizeBindings": {
+    "sm":      { "root.height": "control-height/sm", "root.paddingX": "spacing/inset-md" },
+    "default": { "root.height": "control-height/md", "root.paddingX": "spacing/inset-lg" },
+    "lg":      { "root.height": "control-height/lg", "root.paddingX": "spacing/inset-2xl" }
+  },
+
+  "variantBindings": {
+    "default":     { "fill": "surface/action",      "label": "text/on-action",      "hoverFill": "surface/action-hover" },
+    "destructive": { "fill": "surface/destructive",  "label": "text/on-destructive", "hoverFill": "surface/destructive-hover" },
+    "outline":     { "fill": "surface/page",         "label": "text/default",        "stroke": "border/default", "hoverFill": "surface/muted" },
+    "secondary":   { "fill": "surface/muted",        "label": "text/default",        "hoverFill": "surface/muted-hover" },
+    "ghost":       { "fill": "none",                 "label": "text/default",        "hoverFill": "surface/muted" },
+    "link":        { "fill": "none",                 "label": "text/default",        "underline": true, "hoverUnderline": true }
+  },
+
+  "states": {
+    "note": "Para el test generamos el estado de reposo (default). hover/focus/disabled quedan documentados para expansion futura.",
+    "hover": "usar hoverFill de cada variante (link: subrayado).",
+    "focus": "anillo visible con border/focus.",
+    "disabled": "layer opacity 50%, sin cambiar tokens."
+  },
+
+  "accessibility": [
+    "Touch target minimo 32px de alto (size sm = 32, cumple).",
+    "Texto minimo 14 (label/default).",
+    "Contraste AA texto/fondo en todas las variantes.",
+    "Estado focus visible con border/focus."
+  ],
+
+  "missing_tokens": [
+    { "token": "surface/destructive-hover", "proposal": "03 Maps, Light: ref color/red/600. Scope: Fill.", "fallback": "surface/destructive" },
+    { "token": "surface/muted-hover",       "proposal": "03 Maps, Light: ref color/neutral/200. Scope: Fill.", "fallback": "surface/muted" },
+    { "token": "spacing/inset-2xl",         "proposal": "03 Maps, ref alias spacing/2xl (32). Scope: Gap (auto layout).", "fallback": "spacing/inset-xl" }
+  ],
+
+  "notes": "Traduccion fiel de shadcn (escala de alturas nueva: default=36/control-height-md, sm=32, lg=40). secondary y accent colapsan en surface/muted porque en el tema zinc comparten valor. El icono opcional dentro del boton usa icon-size/sm (16) y hereda el color del label. La variante 'link' es texto subrayado sin fondo."
+}

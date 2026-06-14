@@ -1,0 +1,80 @@
+{
+  "component": "Input",
+  "base": "shadcn/ui",
+  "archetype": "Campo de texto de una línea. Recibe input del usuario. Ancho fill, altura fija (control-height/lg), borde que varía por estado. No tiene prop variant ni size: el único eje de variación es state.",
+
+  "properties": {
+    "state": { "type": "state", "values": ["default", "focus", "disabled", "invalid"] }
+  },
+
+  "anatomy": {
+    "root": {
+      "element": "frame",
+      "layout": {
+        "direction": "horizontal",
+        "align": "center",
+        "justify": "start",
+        "gap": "none",
+        "width": "fill",
+        "height": "fixed"
+      },
+      "fill": "surface/page",
+      "stroke": { "color": "border/default", "width": 1, "align": "inside" },
+      "radius": "radius/control",
+      "notes": "Altura fija ligada a control-height/lg (40). Padding horizontal spacing/inset-md en ambos lados. Sin padding vertical: alineación center (counterAxisAlignItems=CENTER) centra el texto verticalmente."
+    },
+    "text": {
+      "element": "text",
+      "textStyle": "body/default",
+      "textColor": "text/muted",
+      "content": "Placeholder",
+      "notes": "Representa el texto de placeholder (estado default/disabled/invalid). En estado focus, textColor cambia a text/default para simular texto escrito."
+    }
+  },
+
+  "heightBinding": {
+    "root.height": "control-height/lg"
+  },
+
+  "paddingBinding": {
+    "root.paddingLeft": "spacing/inset-md",
+    "root.paddingRight": "spacing/inset-md"
+  },
+
+  "stateBindings": {
+    "default": {
+      "root.stroke.color": "border/default",
+      "text.textColor": "text/muted"
+    },
+    "focus": {
+      "root.stroke.color": "border/focus",
+      "root.stroke.width": 2,
+      "text.textColor": "text/default",
+      "notes": "El focus ring de shadcn (ring-2 ring-ring ring-offset-2) se traduce como borde de 2px con border/focus. El texto muestra text/default para simular valor escrito."
+    },
+    "disabled": {
+      "root.stroke.color": "border/default",
+      "text.textColor": "text/muted",
+      "root.opacity": 0.5,
+      "notes": "layer opacity 50%, sin cambiar tokens. Cursor not-allowed no aplica en Figma."
+    },
+    "invalid": {
+      "root.stroke.color": "border/destructive",
+      "text.textColor": "text/muted",
+      "notes": "Corresponde a aria-invalid en shadcn. Borde rojo señala error; el mensaje de error vive fuera del componente."
+    }
+  },
+
+  "accessibility": [
+    "Touch target mínimo 40px de alto (control-height/lg, cumple).",
+    "El placeholder nunca reemplaza al label — el label vive fuera del componente.",
+    "Estado focus visible con border/focus (2px stroke).",
+    "Estado invalid distinguible sin depender solo de color: acompañar con texto de error externo.",
+    "Texto mínimo 14px (body/default, cumple).",
+    "Contraste AA: text/muted sobre surface/page cumple en Light."
+  ],
+
+  "missing_tokens": [],
+
+  "notes": "Traducción fiel de shadcn Input (default style, h-10 = 40px). shadcn NO define prop size para Input: el único eje es state. El focus usa stroke 2px con border/focus en lugar del ring+offset de Tailwind, que no tiene equivalente directo en Figma sin drop shadows adicionales. El invalid usa border/destructive (ya existe en Maps desde Alert). Los Input Groups (input + icono) son una composición de nivel superior y no forman parte de este componente atómico."
+}

@@ -1,0 +1,96 @@
+{
+  "component": "Alert",
+  "base": "shadcn/ui",
+  "archetype": "Mensaje semántico contextual: una superficie con borde que comunica información, agrupando un icono, un título y una descripción.",
+
+  "properties": {
+    "variant": { "type": "variant", "values": ["default", "destructive"] }
+  },
+
+  "anatomy": {
+    "root": {
+      "element": "frame",
+      "layout": {
+        "direction": "horizontal",
+        "align": "top",
+        "gap": "spacing/inline-md",
+        "padding": { "x": "spacing/inset-lg", "y": "spacing/inset-md" },
+        "width": "fill",
+        "height": "hug"
+      },
+      "fill": "surface/card",
+      "stroke": { "color": "border/default", "width": 1 },
+      "radius": "radius/surface"
+    },
+
+    "icon": {
+      "element": "icon-instance",
+      "iconComponent": "icon/info",
+      "iconSize": "icon-size/sm",
+      "fill": "text/default",
+      "notes": "Tamaño 16 (size-4 en shadcn). Alineado al top del contenido."
+    },
+
+    "content": {
+      "element": "frame",
+      "layout": {
+        "direction": "vertical",
+        "gap": "spacing/stack-xs",
+        "width": "fill",
+        "height": "hug"
+      }
+    },
+
+    "title": {
+      "element": "text",
+      "textStyle": "label/default",
+      "textColor": "text/default",
+      "content": "Heads up!"
+    },
+
+    "description": {
+      "element": "text",
+      "textStyle": "body/default",
+      "textColor": "text/muted",
+      "content": "You can add components to your app using the cli."
+    }
+  },
+
+  "variants": {
+    "variant": ["default", "destructive"],
+    "overrides": {
+      "default": {
+        "icon.iconComponent": "icon/info",
+        "icon.fill": "text/default",
+        "title.textColor": "text/default",
+        "description.textColor": "text/muted"
+      },
+      "destructive": {
+        "icon.iconComponent": "icon/error",
+        "icon.fill": "text/destructive",
+        "title.textColor": "text/destructive",
+        "description.textColor": "text/destructive",
+        "root.stroke.color": "border/destructive"
+      }
+    }
+  },
+
+  "states": ["default"],
+
+  "accessibility": [
+    "El root lleva role=alert para lectores de pantalla.",
+    "El icono es semántico: nunca va solo, siempre acompañado de título/descripción en texto.",
+    "Contraste AA en Light y Dark: los pares text/surface usados ya lo cumplen.",
+    "Tamaño de texto mínimo 14 (body/default); nunca por debajo de 12."
+  ],
+
+  "missing_tokens": [
+    {
+      "token": "border/destructive",
+      "proposal": "Crear en 03 Maps. Light: ref color/red/500. Dark: ref color/red/900. Scope: Stroke.",
+      "fallback": "Si no se crea, usar border/default en la variante destructive."
+    }
+  ],
+
+  "notes": "Traducción fiel de shadcn: solo variantes 'default' y 'destructive' (shadcn no trae info/success/warning de fábrica). Si en el futuro querés tonos info/success/warning, es una EXTENSIÓN consciente que requiere crear Maps surface/info-subtle, text/info, etc. Extensión opcional ya soportada por tokens: alerta 'dismissible' agregando icon/close a la derecha del root con fill text/muted."
+}
